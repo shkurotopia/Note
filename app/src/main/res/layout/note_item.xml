@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:backgroundTint="#DBE2EF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--text view for displaying news title-->
+        <TextView
+            android:id="@+id/idNoteTittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:text="Tittle"
+            android:textAllCaps="true"
+            android:textColor="#3F72AF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/idNoteTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idNoteTittle"
+            android:layout_marginStart="8dp"
+            android:text="Date"
+            android:textColor="#3F72AF"
+            android:textSize="12sp" />
+
+        <!--text view for displaying news description-->
+        <TextView
+            android:id="@+id/idNoteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idNoteTime"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:text="Note text"
+            android:textColor="#3F72AF"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
