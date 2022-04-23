@@ -6,11 +6,13 @@ public class Note {
     private String noteTittle;
     private String noteContent;
     private LocalDate noteDate;
+    private int id;
 
-    public Note(String noteTittle, String noteContent, LocalDate noteDate) {
+    public Note(String noteTittle, String noteContent, LocalDate noteDate, int id) {
         this.noteTittle = noteTittle;
         this.noteContent = noteContent;
         this.noteDate = noteDate;
+        this.id = id;
     }
 
     public String getNoteTittle() {
@@ -35,5 +37,13 @@ public class Note {
 
     public void setNoteDate(LocalDate noteDate) {
         this.noteDate = noteDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

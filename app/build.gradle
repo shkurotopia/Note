@@ -34,10 +34,6 @@ dependencies {
     // https://mvnrepository.com/artifact/io.noties.markwon/core
     implementation 'io.noties.markwon:core:4.6.2'
 
-    // https://mvnrepository.com/artifact/io.noties.markwon/editor
-    implementation 'io.noties.markwon:editor:4.6.2'
-
-
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'

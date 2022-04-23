@@ -5,10 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.note.db.NoteContract;
+import com.example.note.db.NoteDbHelper;
+
+import java.time.LocalDate;
+
 public class Editor extends AppCompatActivity {
+    private int noteId;
+    private NoteDbHelper dbHelper;
+    private EditText editTittle, editContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +26,22 @@ public class Editor extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        TextView textView = findViewById(R.id.editorHead);
-        textView.setText(intent.getStringExtra("com.example.note.itemHeader"));
+        dbHelper = new NoteDbHelper(Editor.this);
 
-        textView = findViewById(R.id.editorContent);
-        textView.setText(intent.getStringExtra("com.example.note.itemContent"));
+        noteId = intent.getIntExtra("com.example.note.itemId", 0);
+
+        editTittle = findViewById(R.id.editorHead);
+        editTittle.setText(intent.getStringExtra("com.example.note.itemHeader"));
+
+        editContent = findViewById(R.id.editorContent);
+        editContent.setText(intent.getStringExtra("com.example.note.itemContent"));
     }
 
     public void onClickSave(View v)
     {
-        Toast.makeText(this, "Clicked on Button", Toast.LENGTH_LONG).show();
+        if (noteId == 0)
+            dbHelper.addNewNote(editTittle.getText().toString(), editContent.getText().toString(), LocalDate.now().toString());
+        else
+            dbHelper.updateNote(noteId, editTittle.getText().toString(), editContent.getText().toString());
     }
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.note.db.NoteContract;
 import com.example.note.db.NoteDbHelper;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class Main extends AppCompatActivity implements NoteRVAdapter.ListItemClickListener {
     private ArrayList<Note> notes;
     RecyclerView recyclerView;
+    private NoteDbHelper dbHelper;
 
 
     @Override
@@ -25,40 +27,11 @@ public class Main extends AppCompatActivity implements NoteRVAdapter.ListItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbHelper = new NoteDbHelper(Main.this);
+
         recyclerView = findViewById(R.id.idNotes);
 
-        NoteDbHelper dbHelper = new NoteDbHelper(this);
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String[] projection = {
-                NoteContract.NoteEntry.COLUMN_NAME_TITLE,
-                NoteContract.NoteEntry.COLUMN_NAME_DATE,
-                NoteContract.NoteEntry.COLUMN_NAME_CONTENT
-        };
-
-        Cursor cursor = db.query(
-                NoteContract.NoteEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                NoteContract.NoteEntry._ID + " ASC"
-        );
-
-
-        notes = new ArrayList<>();
-        while(cursor.moveToNext())
-        {
-            String noteTitle = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_TITLE));
-            String noteDate = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_DATE));
-            String noteContent = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_CONTENT));
-
-            notes.add(new Note(noteTitle, noteContent, LocalDate.parse(noteDate)));
-        }
-
-        cursor.close();
+        notes = dbHelper.readNotes();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -67,15 +40,34 @@ public class Main extends AppCompatActivity implements NoteRVAdapter.ListItemCli
     }
 
     @Override
+    protected void onPause()
+    {
+        super.onPause();
+    }
+    @Override
     protected void onResume() {
         super.onResume();
+
+        notes.clear();
+        notes = dbHelper.readNotes();
+
+        NoteRVAdapter adapter = new NoteRVAdapter(notes, this, this);
+        recyclerView.setAdapter(adapter);
     }
 
+    public void onClickAdd(View view)
+    {
+        Intent intent = new Intent(this, Editor.class);
+        intent.putExtra("com.example.note.itemId", 0);
+        intent.putExtra("com.example.note.itemHeader", "");
+        intent.putExtra("com.example.note.itemContent", "");
+        startActivity(intent);
+    }
     @Override
     public void onListItemClick(int pos)
     {
         Intent intent = new Intent(this, Editor.class);
-        intent.putExtra("com.example.note.itemId", pos);
+        intent.putExtra("com.example.note.itemId", notes.get(pos).getId());
         intent.putExtra("com.example.note.itemHeader", notes.get(pos).getNoteTittle());
         intent.putExtra("com.example.note.itemContent", notes.get(pos).getNoteContent());
         startActivity(intent);
