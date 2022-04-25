@@ -3,7 +3,8 @@ package com.example.note.db;
 import android.provider.BaseColumns;
 
 public final class NoteContract {
-    private NoteContract() {}
+    private NoteContract() {
+    }
 
     public static class NoteEntry implements BaseColumns {
         public static final String TABLE_NAME = "Note";

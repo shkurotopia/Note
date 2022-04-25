@@ -12,17 +12,25 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import com.example.note.db.NoteContract.NoteEntry;
+
 public class NoteDbHelper extends SQLiteOpenHelper {
 
-    public static  final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Notes.db";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + NoteContract.NoteEntry.TABLE_NAME + " (" +
-                    NoteContract.NoteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    NoteContract.NoteEntry.COLUMN_NAME_TITLE + " TEXT, " +
-                    NoteContract.NoteEntry.COLUMN_NAME_DATE + " TEXT NOT NULL, " +
-                    NoteContract.NoteEntry.COLUMN_NAME_CONTENT + " TEXT)";
+            "CREATE TABLE " + NoteEntry.TABLE_NAME + " (" +
+                    NoteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    NoteEntry.COLUMN_NAME_TITLE + " TEXT, " +
+                    NoteEntry.COLUMN_NAME_DATE + " TEXT NOT NULL, " +
+                    NoteEntry.COLUMN_NAME_CONTENT + " TEXT)";
+    private static  final String SQL_INSERT_HELLO_WORLD =
+            "INSERT INTO " + NoteEntry.TABLE_NAME + "(" + NoteEntry.COLUMN_NAME_TITLE +
+                    ", " + NoteEntry.COLUMN_NAME_DATE + ", " + NoteEntry.COLUMN_NAME_CONTENT + ")" +
+                    " VALUES ('Hello, world!', '2022-04-25', '# Возможности\n" +
+                    "Заметки в этом приложении можно писать с применением языка разметки Markdown. Примеры разметки можно найти [здесь](https://ru.wikipedia.org/wiki/Markdown).')";
+
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NoteContract.NoteEntry.TABLE_NAME;
@@ -34,7 +42,9 @@ public class NoteDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_INSERT_HELLO_WORLD);
     }
 
     @Override
@@ -57,8 +67,7 @@ public class NoteDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Note> readNotes()
-    {
+    public ArrayList<Note> readNotes() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = {
@@ -80,9 +89,8 @@ public class NoteDbHelper extends SQLiteOpenHelper {
 
         ArrayList<Note> notes = new ArrayList<>();
 
-        while(cursor.moveToNext())
-        {
-            int noteId =cursor.getInt(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry._ID));
+        while (cursor.moveToNext()) {
+            int noteId = cursor.getInt(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry._ID));
             String noteTitle = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_TITLE));
             String noteDate = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_DATE));
             String noteContent = cursor.getString(cursor.getColumnIndexOrThrow(NoteContract.NoteEntry.COLUMN_NAME_CONTENT));
@@ -94,8 +102,7 @@ public class NoteDbHelper extends SQLiteOpenHelper {
         return notes;
     }
 
-    public void updateNote(int id, String tittle, String content)
-    {
+    public void updateNote(int id, String tittle, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
