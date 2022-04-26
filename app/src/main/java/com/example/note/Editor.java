@@ -2,7 +2,6 @@ package com.example.note;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,24 +12,28 @@ import com.example.note.db.NoteDbHelper;
 import java.time.LocalDate;
 
 import io.noties.markwon.Markwon;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 
+/**
+ * Editor Activity
+ * @author Solovev Alexander
+ * @version 1.0
+ */
 public class Editor extends AppCompatActivity {
     private int noteId;
     private NoteDbHelper dbHelper;
     private EditText editTittle, editContent;
-    private Markwon markwon;
+    private final Markwon markwon = Markwon.builder(Editor.this)
+            .usePlugin(StrikethroughPlugin.create())
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        final Markwon markwon = Markwon.builder(Editor.this)
-                .usePlugin(StrikethroughPlugin.create())
-                .build();
         final MarkwonEditor editor = MarkwonEditor.create(markwon);
 
         Intent intent = getIntent();
@@ -53,6 +56,12 @@ public class Editor extends AppCompatActivity {
         else
             dbHelper.updateNote(noteId, editTittle.getText().toString(), editContent.getText().toString());
         finish();
+    }
 
+    public void onClickDelete(View v) {
+        if (noteId != 0)
+            dbHelper.deleteNote(noteId);
+
+        finish();
     }
 }

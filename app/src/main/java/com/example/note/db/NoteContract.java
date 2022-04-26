@@ -2,6 +2,12 @@ package com.example.note.db;
 
 import android.provider.BaseColumns;
 
+/**
+ * Contract class for work with database
+ *
+ *  @author Solovev Alexander
+ *  @version 1.0
+ */
 public final class NoteContract {
     private NoteContract() {
     }

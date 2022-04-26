@@ -1,11 +1,8 @@
 package com.example.note;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +18,25 @@ import java.util.ArrayList;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 
+/**
+ * Recycler view adapter for data
+ *
+ * @author Solovev Alexander
+ * @version 1.0
+ */
 public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.ViewHolder> {
+    /**
+     * Array of notes
+     */
     private final ArrayList<Note> noteArrayList;
+
     private final Context context;
-    final private ListItemClickListener onCLickListener;
-    private Markwon markwon;
+    private final ListItemClickListener onCLickListener;
+
+    /**
+     * Markdown parser and renderer
+     */
+    private final Markwon markwon;
 
     public NoteRVAdapter(ArrayList<Note> noteArrayList, Context context, ListItemClickListener onCLickListener) {
         this.noteArrayList = noteArrayList;
@@ -40,9 +51,14 @@ public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.ViewHolder
     @NonNull
     @Override
     public NoteRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       return new NoteRVAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.note_item, parent, false));
+        return new NoteRVAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.note_item, parent, false));
     }
 
+    /**
+     * Renders Markdown content of noteArrayList into TextView
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull NoteRVAdapter.ViewHolder holder, int position) {
         Note note = noteArrayList.get(position);
@@ -58,9 +74,11 @@ public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.ViewHolder
         holder.noteContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    /**
+     * @return size of noteArrayList
+     */
     @Override
     public int getItemCount() {
-        // returning the size of array list
         return noteArrayList.size();
     }
 
@@ -68,6 +86,9 @@ public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.ViewHolder
         void onListItemClick(int pos);
     }
 
+    /**
+     * Holder for note content
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView noteTittle;

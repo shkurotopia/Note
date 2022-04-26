@@ -2,10 +2,31 @@ package com.example.note;
 
 import java.time.LocalDate;
 
+/**
+ * Class that represents note
+ *
+ * @author Solovev Alexander
+ * @version 1.0
+ */
 public class Note {
+    /**
+     * Tittle of the note
+     */
     private String noteTittle;
+
+    /**
+     * Body of the note. Can contain text in markdown format
+     */
     private String noteContent;
+
+    /**
+     * Creation date
+     */
     private LocalDate noteDate;
+
+    /**
+     * Note id from database
+     */
     private int id;
 
     public Note(String noteTittle, String noteContent, LocalDate noteDate, int id) {

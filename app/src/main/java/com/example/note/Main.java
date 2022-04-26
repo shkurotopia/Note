@@ -12,6 +12,10 @@ import com.example.note.db.NoteDbHelper;
 
 import java.util.ArrayList;
 
+/**
+ * @author Solovev Alexander
+ * @version 1.0
+ */
 public class Main extends AppCompatActivity implements NoteRVAdapter.ListItemClickListener {
     RecyclerView recyclerView;
     private ArrayList<Note> notes;
